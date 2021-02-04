@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handing Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Form</h1>
+<form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
+    <p>Name: <input type="text" th:field="*{name}" /></p>
+    <p>E_mail: <input type="text" th:field="*{mail}" /></p>
+    <p><input type="submit" value="Submit" /> </p>
+</form>
+</body>
+</html>
