@@ -46,4 +46,5 @@ public class UserDaoImpl implements UserDao {
                 .setParameter("name", name).getResultList()
                 .stream().findAny();
     }
+
 }
