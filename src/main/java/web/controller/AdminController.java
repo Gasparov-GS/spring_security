@@ -42,7 +42,6 @@ public class AdminController {
 
     @PostMapping("/admin/addUser")
     private String addUser(@ModelAttribute User user, Model model) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         model.addAttribute("user", user);
         userService.addUser(user);
         return "redirect:/admin";
@@ -61,5 +60,15 @@ public class AdminController {
         userService.addUser(user);
         return "redirect:/admin";
     }
+
+    @GetMapping("/admin/addRole/{id}")
+    public String updateFormForRole(@PathVariable("id") int id, Model model) {
+        User user = userService.findUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        model.addAttribute("user", user);
+        return "updateUser";
+
+    }
+
 
 }

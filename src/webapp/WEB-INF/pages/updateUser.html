@@ -7,14 +7,20 @@
 <body>
 <h1>Form</h1>
 <form action="#"
-      th:action="@{/update/{id}(id=${user.id})}"
+      th:action="@{/admin/update/{id}(id=${user.id})}"
       th:object="${user}"
       method="post">
     <label for="name">Name</label>
     <input type="text" th:field="*{name}" id="name" placeholder="Name">
     <label for="email">Email</label>
     <input type="text" th:field="*{mail}" id="email" placeholder="Email">
+    <label for="pass">Password</label>
+    <input type="text" th:field="*{password}" id="pass" placeholder="Password">
     <input type="submit" value="Update"/>
+</form>
+<a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
+<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+    <input hidden type="submit" value="Sign Out"/>
 </form>
 </body>
 </html>

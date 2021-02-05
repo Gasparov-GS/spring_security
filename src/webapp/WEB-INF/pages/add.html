@@ -12,5 +12,9 @@
     <p>Password: <input type="text" th:field="*{password}" /></p>
     <p><input type="submit" value="Submit" /> </p>
 </form>
+<a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
+<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+    <input hidden type="submit" value="Sign Out"/>
+</form>
 </body>
 </html>

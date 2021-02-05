@@ -39,6 +39,10 @@
     <form >
         <a th:href="@{/admin/addUser}">Add User</a>
     </form>
+    <a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
+    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+        <input hidden type="submit" value="Sign Out"/>
+    </form>
 </div>
 </body>
 </html>

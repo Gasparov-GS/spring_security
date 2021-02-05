@@ -11,4 +11,5 @@ public interface UserService {
     void removeUser(int id);
     List<User> allUser();
     Optional<User> findUserById(int id);
+    Optional<User> findUserByName(String username);
 }

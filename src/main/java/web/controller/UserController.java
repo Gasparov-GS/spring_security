@@ -1,17 +1,27 @@
 package web.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import web.model.User;
+import web.service.UserService;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class UserController {
+
+	private final UserService userService;
+
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
 
 	@RequestMapping(value = "hello", method = RequestMethod.GET)
 	public String printWelcome(ModelMap model) {
@@ -27,4 +37,18 @@ public class UserController {
     public String loginPage() {
         return "login";
     }
+
+    @GetMapping("/user")
+	public String userPage(Principal principal, ModelMap model) {
+		List<String> messages = new ArrayList<>();
+		User user = userService.findUserByName(principal.getName())
+				.orElseThrow(()-> new IllegalArgumentException("Пользователь не найден"));
+		messages.add("Name: " + user.getName());
+		messages.add("ID: " + user.getId());
+		messages.add("E-mail: " + user.getMail());
+		model.addAttribute("messages", messages);
+		return "hello";
+	}
+
+
 }

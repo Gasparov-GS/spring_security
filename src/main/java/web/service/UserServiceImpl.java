@@ -45,6 +45,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public Optional<User> findUserByName(String username) {
+        return userDao.findUserByName(username);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userDao.findUserByName(s).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }

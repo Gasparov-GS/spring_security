@@ -1,5 +1,6 @@
 package web.dao;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import web.model.User;
 
@@ -17,6 +18,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUser(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         entityManager.merge(user);
     }
 

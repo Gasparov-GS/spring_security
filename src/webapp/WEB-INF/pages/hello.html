@@ -11,5 +11,12 @@
         <h1 th:text="${msg}"></h1>
     </th:block>
 </div>
+<a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
+<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+    <input hidden type="submit" value="Sign Out"/>
+</form>
+<button>
+<a th:href="@{/admin}">FOR ADMIN</a>
+</button>
 </body>
 </html>
