@@ -6,10 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import web.model.Role;
 import web.model.User;
 import web.service.UserService;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class AdminController {
@@ -41,7 +45,15 @@ public class AdminController {
     }
 
     @PostMapping("/admin/addUser")
-    private String addUser(@ModelAttribute User user, Model model) {
+    private String addUser(@ModelAttribute User user, Model model
+            , @RequestParam("a")String[] checkboxvalues) {
+        Set<Role> roleSet = new HashSet<>();
+        for (String result:
+             checkboxvalues) {
+            roleSet.add(new Role(result));
+        }
+        user.setRoles(roleSet);
+        user.getRoles().forEach(userService::saveRole);
         model.addAttribute("user", user);
         userService.addUser(user);
         return "redirect:/admin";

@@ -1,5 +1,6 @@
 package web.service;
 
+import web.model.Role;
 import web.model.User;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface UserService {
     List<User> allUser();
     Optional<User> findUserById(int id);
     Optional<User> findUserByName(String username);
+    void saveRole(Role role);
 }

@@ -1,17 +1,22 @@
 package web.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import web.model.Role;
 import web.model.User;
 import web.service.UserService;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class UserController {
@@ -35,6 +40,16 @@ public class UserController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String loginPage() {
+		Set<Role> roleSet = new HashSet<>();
+		User user = new User();
+		user.setName("fff");
+		user.setMail("111");
+		user.setPassword("111");
+		Set<Role>roles = new HashSet<>();
+		roles.add(new Role("ROLE_ADMIN"));
+		user.setRoles(roles);
+		user.getRoles().forEach(userService::saveRole);
+		userService.addUser(user);
         return "login";
     }
 
