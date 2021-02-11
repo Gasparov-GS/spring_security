@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "userSecurity")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -19,12 +19,13 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "e_mail")
+    @Column(name = "email")
     private String mail;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    @Column(name = "password")
     private String password;
 
     public User(String name, String mail) {
@@ -108,47 +109,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof User)) return false;
-        final User other = (User) o;
-        if (!other.canEqual((Object) this)) return false;
-        if (this.getId() != other.getId()) return false;
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
-        final Object this$mail = this.getMail();
-        final Object other$mail = other.getMail();
-        if (this$mail == null ? other$mail != null : !this$mail.equals(other$mail)) return false;
-        final Object this$roles = this.getRoles();
-        final Object other$roles = other.getRoles();
-        if (this$roles == null ? other$roles != null : !this$roles.equals(other$roles)) return false;
-        final Object this$password = this.getPassword();
-        final Object other$password = other.getPassword();
-        if (this$password == null ? other$password != null : !this$password.equals(other$password)) return false;
-        return true;
-    }
 
-    protected boolean canEqual(final Object other) {
-        return other instanceof User;
-    }
 
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        result = result * PRIME + this.getId();
-        final Object $name = this.getName();
-        result = result * PRIME + ($name == null ? 43 : $name.hashCode());
-        final Object $mail = this.getMail();
-        result = result * PRIME + ($mail == null ? 43 : $mail.hashCode());
-        final Object $roles = this.getRoles();
-        result = result * PRIME + ($roles == null ? 43 : $roles.hashCode());
-        final Object $password = this.getPassword();
-        result = result * PRIME + ($password == null ? 43 : $password.hashCode());
-        return result;
-    }
-
-    public String toString() {
-        return "User(id=" + this.getId() + ", name=" + this.getName() + ", mail=" + this.getMail() + ", roles=" + this.getRoles() + ", password=" + this.getPassword() + ")";
-    }
 }

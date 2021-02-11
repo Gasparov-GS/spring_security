@@ -17,4 +17,9 @@ public class RoleDaoImpl implements RoleDao {
     public void addRole(Role role) {
         entityManager.merge(role);
     }
+
+    @Override
+    public void removeRole(Role role) {
+        entityManager.remove(role);
+    }
 }

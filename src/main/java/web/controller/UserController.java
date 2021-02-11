@@ -1,6 +1,7 @@
 package web.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +49,7 @@ public class UserController {
 		Set<Role>roles = new HashSet<>();
 		roles.add(new Role("ROLE_ADMIN"));
 		user.setRoles(roles);
-		user.getRoles().forEach(userService::saveRole);
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		userService.addUser(user);
         return "login";
     }

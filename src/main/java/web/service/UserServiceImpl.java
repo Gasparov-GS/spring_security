@@ -55,9 +55,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void saveRole(Role role) {
-
+    public void removeRole(Role role) {
+        roleDao.removeRole(role);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

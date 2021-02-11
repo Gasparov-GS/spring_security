@@ -10,7 +10,6 @@ import web.model.Role;
 import web.model.User;
 import web.service.UserService;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Controller
 public class AdminController {
 
-   private final UserService userService;
+    private final UserService userService;
 
     public AdminController(UserService userService) {
         this.userService = userService;
@@ -45,16 +44,14 @@ public class AdminController {
     }
 
     @PostMapping("/admin/addUser")
-    private String addUser(@ModelAttribute User user, Model model
-            , @RequestParam("a")String[] checkboxvalues) {
+    private String addUser(@ModelAttribute User user, @RequestParam("a") String[] checkboxvalues) {
         Set<Role> roleSet = new HashSet<>();
-        for (String result:
-             checkboxvalues) {
+        for (String result :
+                checkboxvalues) {
             roleSet.add(new Role(result));
         }
         user.setRoles(roleSet);
-        user.getRoles().forEach(userService::saveRole);
-        model.addAttribute("user", user);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userService.addUser(user);
         return "redirect:/admin";
     }
@@ -68,7 +65,17 @@ public class AdminController {
     }
 
     @PostMapping("/admin/update/{id}")
-    public String updateUser(User user) {
+    public String updateUser(User user, @RequestParam("a") String[] checkboxvalues) {
+        Set<Role> roleSet = new HashSet<>();
+        for (String result :
+                checkboxvalues) {
+            if (!result.equals("Set role")) {
+                roleSet.add(new Role(result));
+            }
+        }
+        User userDB = userService.findUserByName(user.getUsername()).get();
+        userService.removeUser(userDB.getId());
+        user.setRoles(roleSet);
         userService.addUser(user);
         return "redirect:/admin";
     }
@@ -81,6 +88,4 @@ public class AdminController {
         return "updateUser";
 
     }
-
-
 }
