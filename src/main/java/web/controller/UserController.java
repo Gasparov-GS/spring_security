@@ -22,49 +22,21 @@ import java.util.Set;
 @RequestMapping("/")
 public class UserController {
 
-	private final UserService userService;
+    private final UserService userService;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
-
-
-	@RequestMapping(value = "hello", method = RequestMethod.GET)
-	public String printWelcome(ModelMap model) {
-		List<String> messages = new ArrayList<>();
-		messages.add("Hello!");
-		messages.add("I'm Spring MVC-SECURITY application");
-		messages.add("5.2.0 version by sep'19 ");
-		model.addAttribute("messages", messages);
-		return "hello";
-	}
-
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String loginPage() {
-		Set<Role> roleSet = new HashSet<>();
-		User user = new User();
-		user.setName("fff");
-		user.setMail("111");
-		user.setPassword("111");
-		Set<Role>roles = new HashSet<>();
-		roles.add(new Role("ROLE_ADMIN"));
-		user.setRoles(roles);
-		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		userService.addUser(user);
-        return "login";
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/user")
-	public String userPage(Principal principal, ModelMap model) {
-		List<String> messages = new ArrayList<>();
-		User user = userService.findUserByName(principal.getName())
-				.orElseThrow(()-> new IllegalArgumentException("Пользователь не найден"));
-		messages.add("Name: " + user.getName());
-		messages.add("ID: " + user.getId());
-		messages.add("E-mail: " + user.getMail());
-		model.addAttribute("messages", messages);
-		return "hello";
-	}
-
-
+    public String userPage(Principal principal, ModelMap model) {
+        List<String> messages = new ArrayList<>();
+        User user = userService.findUserByName(principal.getName())
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден"));
+        messages.add("Name: " + user.getName());
+        messages.add("ID: " + user.getId());
+        messages.add("E-mail: " + user.getMail());
+        model.addAttribute("messages", messages);
+        return "hello";
+    }
 }

@@ -6,13 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import web.model.Role;
 import web.model.User;
 import web.service.UserService;
+import web.service.UtilService;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class AdminController {
@@ -22,7 +20,6 @@ public class AdminController {
     public AdminController(UserService userService) {
         this.userService = userService;
     }
-
 
     @GetMapping(value = "/admin")
     public String userList(ModelMap modelMap) {
@@ -44,13 +41,8 @@ public class AdminController {
     }
 
     @PostMapping("/admin/addUser")
-    private String addUser(@ModelAttribute User user, @RequestParam("a") String[] checkboxvalues) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String result :
-                checkboxvalues) {
-            roleSet.add(new Role(result));
-        }
-        user.setRoles(roleSet);
+    private String addUser(@ModelAttribute User user, @RequestParam("a") String[] values) {
+        user.setRoles(UtilService.valuesToSetRole(values));
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userService.addUser(user);
         return "redirect:/admin";
@@ -65,17 +57,8 @@ public class AdminController {
     }
 
     @PostMapping("/admin/update/{id}")
-    public String updateUser(User user, @RequestParam("a") String[] checkboxvalues) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String result :
-                checkboxvalues) {
-            if (!result.equals("Set role")) {
-                roleSet.add(new Role(result));
-            }
-        }
-        User userDB = userService.findUserByName(user.getUsername()).get();
-        userService.removeUser(userDB.getId());
-        user.setRoles(roleSet);
+    public String updateUser(User user, @RequestParam("a") String[] values) {
+        user.setRoles(UtilService.valuesToSetRole(values));
         userService.addUser(user);
         return "redirect:/admin";
     }
@@ -86,6 +69,5 @@ public class AdminController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         model.addAttribute("user", user);
         return "updateUser";
-
     }
 }

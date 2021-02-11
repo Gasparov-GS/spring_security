@@ -1,6 +1,5 @@
 package web.dao;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import web.model.Role;
 import web.model.User;
@@ -15,7 +14,6 @@ public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public void addUser(User user) {
@@ -49,9 +47,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findUserByName(String name) {
-      return entityManager.createQuery("select c from User c where c.name = :name")
+        return entityManager.createQuery("select c from User c where c.name = :name")
                 .setParameter("name", name).getResultList()
                 .stream().findAny();
     }
-
 }
